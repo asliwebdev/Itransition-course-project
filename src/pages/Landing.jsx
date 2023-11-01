@@ -1,6 +1,6 @@
 const Landing = () => {
   return (
-    <div>Landing</div>
+    <section>Landing</section>
   )
 }
 

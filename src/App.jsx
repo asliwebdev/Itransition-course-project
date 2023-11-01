@@ -1,5 +1,5 @@
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
-import { HomeLayout, Collection, Admin, Item, Login, Register, SearchResults,  Landing, UserDashboard} from './pages'
+import { HomeLayout, Collection, Admin, Item, Login, Register, SearchResults,  Landing, Collections} from './pages'
 
 const router = createBrowserRouter([
    {
@@ -11,8 +11,8 @@ const router = createBrowserRouter([
         element: <Landing />,
       },
       {
-        path: 'profile',
-        element: <UserDashboard />,
+        path: 'collections',
+        element: <Collections />,
       },
       {
         path: 'search-results',

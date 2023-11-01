@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.light-shadow {
+    box-shadow: -10px 10px 20px 0px hsla(0,6%,85%,.1);
+}
+
+.bg-dark-gradient {
+    background: linear-gradient(232deg,rgba(23,28,35,.41),rgba(19,22,
+28,.7))
+}
+
+.login-shadow {
+    box-shadow: 0px 29.36170196533203px 58.72340393066406px 0px #00000029;
+}
+
+.nav-link {
+    @apply flex items-center justify-start max-lg:justify-center gap-4 p-4 text-lg leading-[25.2px];
+}
+.small-nav-link {
+    @apply flex items-center justify-start gap-4 p-4 rounded-lg leading-[25.2px] text-lg
+}
