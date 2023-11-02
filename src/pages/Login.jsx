@@ -1,5 +1,26 @@
-import { Form, Link } from 'react-router-dom'
+import { Form, Link, redirect } from 'react-router-dom'
 import {FormInput, SubmitBtn} from '../components'
+import customFetch from '../utils/axios'
+import { toast } from 'react-toastify'
+
+export const action = ({dispatch, loginUser}) =>  async ({request}) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  try {
+    const response = await customFetch.post('/auth/login', data);
+    dispatch(loginUser(response.data));
+    toast.success(`Welcome back ${response.data.user.name || 'user'}`);
+    return redirect('/')
+  } catch (error) {
+    console.log(error);
+    const errorMessage =
+      error?.response?.data?.message ||
+      'please double check your credentials';
+
+    toast.error(errorMessage);
+    return null;
+  }
+}
 
 const Login = () => {
   return (

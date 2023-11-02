@@ -1,6 +1,6 @@
 const UserDashboard = () => {
   return (
-    <div>UserDashboard</div>
+    <div>User Collections</div>
   )
 }
 
