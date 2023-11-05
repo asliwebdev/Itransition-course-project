@@ -1,8 +1,33 @@
-<table className="table table-pin-rows table-pin-cols">
+import {FaRegMinusSquare} from 'react-icons/fa'
+import { formatTime } from "../utils";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllUsers, handleUserSelection, selectAllUsers } from '../features/userSlice';
+import { useEffect } from 'react';
+  
+
+const UsersTable = () => {
+  const {selectedUsers, users, user} = useSelector(store => store.user);
+  const dispatch = useDispatch();
+
+  const handleChange = (id) => {
+    dispatch(handleUserSelection({id}));
+  }
+
+  useEffect(() => {
+    if ((!users || users.length === 0) && user) {
+      dispatch(getAllUsers());
+    }
+  }, [dispatch, users, user]);
+  
+  return (
+          <div className="mt-8 overflow-x-auto">
+            <table className="table table-pin-rows table-pin-cols">
              <thead>
                <tr>
                  <th>
-                   <span className="text-2xl cursor-pointer"><FaRegMinusSquare /></span>
+                   <span className="text-2xl cursor-pointer" onClick={() => dispatch(selectAllUsers())}>
+                     <FaRegMinusSquare />
+                   </span>
                  </th>
                  <th><span className="responsive-text">ID</span></th>
                  <th><span className="responsive-text">Name</span></th>
@@ -15,12 +40,13 @@
              </thead>
              <tbody>
               {
-                users.map((user, index) => {
+                users?.map((user, index) => {
                   const {name, email, lastLogin, status, registrationTime, _id, role} = user;
                 return <tr key={index}>
                         <th>
                           <label>
-                            <input type="checkbox" className="checkbox"/>
+                            <input type="checkbox" className="checkbox" 
+                            onChange={() => handleChange(_id)} checked={selectedUsers.includes(_id)}/>
                           </label>
                         </th>
                         <td>{index + 1}</td>
@@ -35,30 +61,8 @@
               }
              </tbody>
             </table>
+          </div>
+  )
+}
 
-      const users = [
-    {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      lastLogin: "2023-10-25T18:30:00Z",
-      registrationTime: "2023-05-15T10:15:00Z",
-      status: "active",
-      role: "user",
-    },
-    {
-      name: "Alice Smith",
-      email: "alice.smith@example.com",
-      lastLogin: "2023-10-24T14:45:00Z",
-      registrationTime: "2023-09-05T09:20:00Z",
-      status: "active",
-      role: "user",
-    },
-    {
-      name: "Admin User",
-      email: "admin@example.com",
-      lastLogin: "2023-10-25T10:00:00Z",
-      registrationTime: "2023-03-10T15:30:00Z",
-      status: "active",
-      role: "admin",
-    },
-  ];
+export default UsersTable

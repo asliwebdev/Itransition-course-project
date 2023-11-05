@@ -22,3 +22,9 @@
 .small-nav-link {
     @apply flex items-center justify-start gap-4 p-4 rounded-lg leading-[25.2px] text-lg
 }
+
+@layer components {
+    .responsive-text {
+        @apply lg:text-lg md:text-base sm:text-sm;
+    }
+}
