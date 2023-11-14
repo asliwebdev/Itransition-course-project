@@ -3,13 +3,25 @@ import { addUserToLocalStorage, getUserFromLocalStorage, removeUserFromLocalStor
 import customFetch from '../utils/axios'
 import { toast } from "react-toastify";
 
+const themes = {
+    myLight: 'myLight',
+    myDark: 'myDark',
+  }
+  
+  const getThemeFromLocalStorage = () => {
+    return localStorage.getItem('CourseTheme') || themes.myDark
+  }
+
 const initialState = {
     isSidebarOpen: false,
     isLoading: false,
     user: getUserFromLocalStorage()?.user,
     users: [],
     selectedUsers: [],
+    theme: getThemeFromLocalStorage(),
 }
+
+
 
 export const getAllUsers = createAsyncThunk('user/getAllUsers', 
   async (_, thunkAPI) => {
@@ -87,6 +99,11 @@ const userSlice = createSlice({
               newSelectedUsers = [];
             }
             state.selectedUsers = newSelectedUsers;
+        },
+        handleTheme: (state) => {
+            const {myLight, myDark} = themes;
+            const newTheme = state.theme === myLight ? myDark : myLight;
+            state.theme = newTheme;
         }
     },
     extraReducers: (builder) => {
@@ -115,6 +132,6 @@ const userSlice = createSlice({
     }
 })
 
-export const {toggleSidebar, loginUser, logoutUser, handleUserSelection, clearSelectedUsers, selectAllUsers} = userSlice.actions
+export const {toggleSidebar, loginUser, logoutUser, handleUserSelection, clearSelectedUsers, selectAllUsers, handleTheme} = userSlice.actions
 
 export default userSlice.reducer

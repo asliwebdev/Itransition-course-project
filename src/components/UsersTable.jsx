@@ -42,7 +42,7 @@ const UsersTable = () => {
               {
                 users?.map((user, index) => {
                   const {name, email, lastLogin, status, registrationTime, _id, role} = user;
-                return <tr key={index}>
+                return <tr key={_id}>
                         <th>
                           <label>
                             <input type="checkbox" className="checkbox" 

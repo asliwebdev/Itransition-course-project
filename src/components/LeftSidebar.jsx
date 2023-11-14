@@ -8,7 +8,7 @@ import {toast} from 'react-toastify'
 import { logoutUser } from "../features/userSlice"
 
 const LeftSidebar = () => {
-  const {user} = useSelector(store => store.user);
+  const {user, theme} = useSelector(store => store.user);
   const dispatch = useDispatch();
 
   const logout = () => {
@@ -18,8 +18,8 @@ const LeftSidebar = () => {
   }
 
   return (
-    <aside className='bg-secondary p-6 pt-36 sticky top-0 left-0 min-h-screen w-fit max-sm:hidden 
-    lg:w-[266px] overflow-y-auto flex flex-col justify-between light-shadow border-r border-base-300'>
+    <aside className={`bg-secondary p-6 pt-36 sticky top-0 left-0 min-h-screen w-fit max-sm:hidden lg:w-[266px] 
+    overflow-y-auto flex flex-col justify-between ${theme === 'myLight' ? 'light-shadow border-r border-base-300' : ''}`}>
        <div className="flex flex-1 flex-col gap-6">
          {
           links.map(link => {

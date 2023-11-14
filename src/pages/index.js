@@ -1,10 +1,11 @@
-export {default as HomeLayout} from './HomeLayout'
-export {default as Collection} from './Collection'
-export {default as Login} from './Login'
-export {default as Register} from './Register'
-export {default as Collections} from './Collections'
-export {default as SearchResults} from './SearchResults'
-export {default as Item} from './Item'
-export {default as Admin} from './Admin'
-export {default as Landing} from './Landing'
-export {default as ProtectedRoute} from './ProtectedRoute'
+export { default as HomeLayout } from "./HomeLayout";
+export { default as Collection } from "./Collection";
+export { default as Login } from "./Login";
+export { default as Register } from "./Register";
+export { default as Collections } from "./Collections";
+export { default as SearchResults } from "./SearchResults";
+export { default as Item } from "./Item";
+export { default as Admin } from "./Admin";
+export { default as Landing } from "./Landing";
+export { default as ProtectedRoute } from "./ProtectedRoute";
+export { default as Tags } from "./Tags";
