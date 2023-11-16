@@ -14,13 +14,16 @@ import {
 } from "./pages";
 import { action as loginAction } from "./pages/Login";
 import { action as registerAction } from "./pages/Register";
+import { action as collectionAction } from "./pages/Collections";
 import { loginUser } from "./features/userSlice";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createCollection } from "./features/collectionSlice";
 
 const App = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.user);
 
   const router = createBrowserRouter([
     {
@@ -38,6 +41,7 @@ const App = () => {
               <Collections />
             </ProtectedRoute>
           ),
+          action: collectionAction({ dispatch, createCollection, user }),
         },
         {
           path: "search-results",

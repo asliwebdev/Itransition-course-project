@@ -1,8 +1,11 @@
-export {default as FormInput} from './FormInput'
-export {default as SubmitBtn} from './SubmitBtn'
-export {default as Navbar} from './Navbar'
-export {default as LeftSidebar} from './LeftSidebar'
-export {default as SmallSidebar} from './SmallSidebar'
-export {default as ActionButtonsGroup} from './ActionButtonsGroup'
-export {default as UsersTable} from './UsersTable'
-export {default as RightSidebar} from './RightSidebar'
+export { default as FormInput } from "./FormInput";
+export { default as SubmitBtn } from "./SubmitBtn";
+export { default as Navbar } from "./Navbar";
+export { default as LeftSidebar } from "./LeftSidebar";
+export { default as SmallSidebar } from "./SmallSidebar";
+export { default as ActionButtonsGroup } from "./ActionButtonsGroup";
+export { default as UsersTable } from "./UsersTable";
+export { default as RightSidebar } from "./RightSidebar";
+export { default as Empty } from "./Empty";
+export { default as CollectionCard } from "./CollectionCard";
+export { default as Loading } from "./Loading";
