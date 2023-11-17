@@ -6,6 +6,7 @@ const initialState = {
   isCollectionLoading: true,
   isCollectionOpen: false,
   collections: [],
+  fields: [],
   name: "",
   topic: "",
   description: "",

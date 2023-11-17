@@ -23,7 +23,7 @@ const UsersTable = () => {
   }, [dispatch, users, user]);
 
   return (
-    <div className="mt-8 overflow-x-auto">
+    <div className="mt-8 overflow-x-auto w-full">
       <table className="table table-pin-rows table-pin-cols">
         <thead>
           <tr>

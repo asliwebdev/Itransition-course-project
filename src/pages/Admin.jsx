@@ -15,12 +15,12 @@ const Admin = () => {
   }
 
   return (
-    <>
+    <div className="flex flex-col justify-center  w-[90%] max-w-2xl">
       <div className="flex items-center justify-between w-full">
         <h1 className="font-bold text-3xl leading-[42px]">All Users</h1>
         <ActionButtonsGroup performAction={performAction} />
       </div>
-      <div className="flex items-center justify-start gap-x-6 mt-8 px-3">
+      <div className="flex items-center justify-start gap-x-6 mt-8">
         <button
           type="button"
           className="btn bg-base-300  capitalize text-[#7B8EC8]"
@@ -37,7 +37,7 @@ const Admin = () => {
         </button>
       </div>
       <UsersTable />
-    </>
+    </div>
   );
 };
 

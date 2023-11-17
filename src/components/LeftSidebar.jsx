@@ -19,7 +19,7 @@ const LeftSidebar = () => {
 
   return (
     <aside
-      className={`bg-secondary p-4 pt-36 sticky top-0 left-0 min-h-screen w-fit max-lg:hidden lg:w-[266px] 
+      className={`bg-secondary p-4 pt-36 sticky top-0 left-0 h-screen w-fit max-md:hidden lg:w-[266px] 
     overflow-y-auto flex flex-col justify-between ${
       theme === "myLight" ? "light-shadow border-r border-base-300" : ""
     }`}
@@ -38,7 +38,7 @@ const LeftSidebar = () => {
               }
             >
               {icon}
-              <p className="capitalize max-[1200px]:hidden">{text}</p>
+              <p className="capitalize max-lg:hidden">{text}</p>
             </NavLink>
           );
         })}
@@ -52,27 +52,27 @@ const LeftSidebar = () => {
             }
           >
             <RiAdminLine />
-            <p className="capitalize max-[1200px]:hidden">Admin</p>
+            <p className="capitalize max-lg:hidden">Admin</p>
           </NavLink>
         )}
       </div>
       {user ? (
         <button type="button" className="nav-link" onClick={logout}>
-          <BiLogOut />
-          <span className="capitalize max-[1200px]:hidden">Logout</span>
+          <BiLogOut className="text-lg" />
+          <span className="capitalize max-lg:hidden">Logout</span>
         </button>
       ) : (
         <div className="flex flex-col gap-3">
           <Link to="/login" className="btn bg-base-300">
-            <BsPersonCircle className="xl:hidden text-lg" />
-            <span className="max-[1200px]:hidden text-primary">Log in</span>
+            <BsPersonCircle className="lg:hidden text-lg" />
+            <span className="max-lg:hidden text-primary">Log in</span>
           </Link>
           <Link
             to="/register"
             className="btn btn-neutral text-base-content border-transparent"
           >
-            <BsPersonAdd className="xl:hidden text-lg" />
-            <span className="max-[1200px]:hidden">Sign up</span>
+            <BsPersonAdd className="lg:hidden text-lg" />
+            <span className="max-lg:hidden">Sign up</span>
           </Link>
         </div>
       )}

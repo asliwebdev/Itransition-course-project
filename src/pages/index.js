@@ -9,3 +9,4 @@ export { default as Admin } from "./Admin";
 export { default as Landing } from "./Landing";
 export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as Tags } from "./Tags";
+export { default as Fields } from "./Fields";

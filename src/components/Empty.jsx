@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux";
 import emptyCollections from "../assets/empty_collection.svg";
 import { toggleCollection } from "../features/collectionSlice";
+import { MdAdd } from "react-icons/md";
 
-const Empty = ({ text, btnText }) => {
+const Empty = ({ text, btnText, paragraph }) => {
   const dispatch = useDispatch();
   return (
     <div className="flex flex-col items-center justify-center">
@@ -17,8 +18,11 @@ const Empty = ({ text, btnText }) => {
         className="btn btn-primary text-white mt-8"
         onClick={() => dispatch(toggleCollection())}
       >
-        {btnText}
+        <span className="flex items-center gap-x-2">
+          <MdAdd className="text-lg" /> {btnText}
+        </span>
       </button>
+      {paragraph && <p className="mt-6 max-w-lg text-center">{paragraph}</p>}
     </div>
   );
 };

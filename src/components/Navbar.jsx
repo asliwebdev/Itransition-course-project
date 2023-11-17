@@ -41,7 +41,7 @@ const Navbar = () => {
           <BsMoonFill className="swap-off h-4 w-4" />
         </label>
         <RxHamburgerMenu
-          className="lg:hidden text-[30px] cursor-pointer"
+          className="md:hidden text-[30px] cursor-pointer"
           onClick={toggle}
         />
       </div>

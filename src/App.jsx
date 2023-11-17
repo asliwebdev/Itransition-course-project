@@ -11,6 +11,7 @@ import {
   Collections,
   ProtectedRoute,
   Tags,
+  Fields,
 } from "./pages";
 import { action as loginAction } from "./pages/Login";
 import { action as registerAction } from "./pages/Register";
@@ -48,8 +49,12 @@ const App = () => {
           element: <SearchResults />,
         },
         {
-          path: "collection",
+          path: "collections/:collectionId",
           element: <Collection />,
+        },
+        {
+          path: "collections/:collectionId/fields",
+          element: <Fields />,
         },
         {
           path: "admin",
