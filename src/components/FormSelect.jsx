@@ -1,4 +1,4 @@
-const FormSelect = ({ list, labelText, name }) => {
+const FormSelect = ({ list, labelText, name, defaultValue }) => {
   return (
     <div className="form-control w-full max-w-xs">
       <label className="label">
@@ -6,7 +6,11 @@ const FormSelect = ({ list, labelText, name }) => {
           {labelText || "Topic"}
         </span>
       </label>
-      <select className="select select-bordered bg-transparent" name={name}>
+      <select
+        className="select select-bordered bg-transparent"
+        name={name}
+        defaultValue={defaultValue || ""}
+      >
         {list.map((item, index) => {
           return (
             <option key={index} value={item} className="bg-base-300">

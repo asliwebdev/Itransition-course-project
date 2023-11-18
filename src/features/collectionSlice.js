@@ -10,6 +10,8 @@ const initialState = {
   name: "",
   topic: "",
   description: "",
+  collectionId: "",
+  isEditing: false,
 };
 
 export const getAllCollections = createAsyncThunk(
@@ -31,11 +33,17 @@ const collectionSlice = createSlice({
     toggleCollection: (state) => {
       state.isCollectionOpen = !state.isCollectionOpen;
     },
-    createCollection: (state, { payload }) => {
-      const { name, topic, description } = payload.collection;
+    setEditCollection: (state, { payload }) => {
+      state.isEditing = true;
+      state.isCollectionOpen = true;
+      const { name, description, topic, collectionId } = payload;
       state.name = name;
-      state.topic = topic;
       state.description = description;
+      state.topic = topic;
+      state.collectionId = collectionId;
+    },
+    toggleEditing: (state) => {
+      state.isEditing = !state.isEditing;
     },
   },
   extraReducers: (builder) => {
@@ -54,6 +62,7 @@ const collectionSlice = createSlice({
   },
 });
 
-export const { toggleCollection, createCollection } = collectionSlice.actions;
+export const { toggleCollection, setEditCollection, toggleEditing } =
+  collectionSlice.actions;
 
 export default collectionSlice.reducer;

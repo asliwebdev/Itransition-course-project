@@ -7,6 +7,9 @@ import { Form } from "react-router-dom";
 
 const CollectionCard = ({ isCollectionOpen }) => {
   const { theme } = useSelector((store) => store.user);
+  const { isEditing, name, topic, description } = useSelector(
+    (store) => store.collection
+  );
   const dispatch = useDispatch();
   const toggle = () => {
     dispatch(toggleCollection());
@@ -38,21 +41,24 @@ const CollectionCard = ({ isCollectionOpen }) => {
           name="name"
           type="text"
           placeholder="e.g Books"
+          defaultValue={isEditing && name}
         />
         <FormInput
           label="Description"
           name="description"
           type="text"
+          defaultValue={isEditing && description}
           textarea
         />
         <div className="flex justify-between items-end">
           <FormSelect
             labelText="Choose a Topic"
             name="topic"
+            defaultValue={isEditing && topic}
             list={["books", "cars", "coins and currency", "other"]}
           />
           <button type="submit" className="btn btn-primary text-white">
-            Create
+            {isEditing ? "Edit" : "Create"}
           </button>
         </div>
       </Form>

@@ -6,10 +6,10 @@ export default {
       colors: {
         br: "rgb(244 246 248)",
         cardBg: "rgba(12, 20, 28, 0.75)",
-      },
-      boxShadow: {
-        md: "-10px 10px 20px 0px hsla(0,6%,85%,.1)",
-        none: "none",
+        tableDarkBr: "hsl(240 3.7% 15.9%)",
+        tableLightBr: "hsl(240 5.9% 90%)",
+        tableLightHover: "hsl(240 4.8% 95.9%)",
+        tableDarkHover: "hsl(240 3.7% 15.9%)",
       },
     },
   },

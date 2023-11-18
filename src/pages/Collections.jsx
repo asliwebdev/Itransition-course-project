@@ -2,31 +2,47 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAllCollections,
+  setEditCollection,
   toggleCollection,
 } from "../features/collectionSlice";
 import { Empty, Loading, CollectionCard } from "../components";
 
 import customFetch from "../utils/axios";
 import { toast } from "react-toastify";
-import { redirect } from "react-router-dom";
-import { MdAdd } from "react-icons/md";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import { MdAdd, MdDelete } from "react-icons/md";
+import { BsThreeDots } from "react-icons/bs";
+import { FaEdit } from "react-icons/fa";
 
 export const action =
-  ({ dispatch, createCollection, user }) =>
+  ({ dispatch, user, isEditing, collectionId, toggleEditing }) =>
   async ({ request }) => {
     const formData = await request.formData();
     const collection = Object.fromEntries(formData);
     try {
-      const response = await customFetch.post("/collections", {
+      if (!isEditing) {
+        const response = await customFetch.post("/collections", {
+          user,
+          collection,
+        });
+        toast.success(
+          `${response?.data?.collection?.name} collection created successfully`
+        );
+        dispatch(toggleCollection());
+        return redirect(
+          `/collections/${response?.data?.collection?._id}/fields`
+        );
+      }
+      const response = await customFetch.patch(`/collections/${collectionId}`, {
         user,
-        collection,
+        updatedFields: collection,
       });
-      dispatch(createCollection(response.data));
       toast.success(
-        `${response?.data?.collection?.name} collection created successfully`
+        `${response?.data?.collection?.name} collection updated successfully`
       );
       dispatch(toggleCollection());
-      return redirect(`/collections/${response?.data?.collection?._id}/fields`);
+      dispatch(toggleEditing());
+      return null;
     } catch (error) {
       console.log(error);
       const errorMessage =
@@ -42,7 +58,22 @@ const Collections = () => {
   const { collections, isCollectionOpen, isCollectionLoading } = useSelector(
     (store) => store.collection
   );
+  const { theme } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleRowClick = (id, event) => {
+    const isLinkClicked = event.target.tagName.toLowerCase() === "a";
+    const isActionButtonClicked = event.target.closest(".dropdown") !== null;
+
+    if (!isLinkClicked && !isActionButtonClicked) {
+      navigate(`/collections/${id}`);
+    }
+  };
+
+  const editCollection = ({ name, description, topic, collectionId }) => {
+    dispatch(setEditCollection({ name, description, topic, collectionId }));
+  };
 
   useEffect(() => {
     dispatch(getAllCollections());
@@ -71,14 +102,14 @@ const Collections = () => {
           <h1 className="font-bold text-3xl leading-[42px]">Collections</h1>
           <button
             type="button"
-            className="btn btn-primary text-white mt-8 flex items-center gap-x-2"
+            className="btn btn-primary text-white flex items-center gap-x-2"
             onClick={() => dispatch(toggleCollection())}
           >
             <MdAdd className="text-lg" /> create collection
           </button>
         </div>
-        <div className="mt-8 overflow-x-auto w-full">
-          <table className="table table-pin-rows table-pin-cols">
+        <div className="mt-8 overflow-x-auto w-full pt-6">
+          <table className="table table-pin-rows table-pin-cols ">
             <thead>
               <tr>
                 <th>
@@ -88,17 +119,14 @@ const Collections = () => {
                   <span className="responsive-text">Name</span>
                 </th>
                 <th>
+                  <span className="responsive-text">Topic</span>
+                </th>
+                <th>
                   <span className="responsive-text">Fields</span>
                 </th>
                 <th>
-                  <span className="responsive-text">Topic</span>
+                  <span className="responsive-text">Actions</span>
                 </th>
-                {/* <th>
-                  <span className="responsive-text">Last Updated By</span>
-                </th> */}
-                {/* <th>
-                  <span className="responsive-text">Updated</span>
-                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -106,7 +134,20 @@ const Collections = () => {
                 const { name, description, topic, _id, creator, customFields } =
                   collection;
                 return (
-                  <tr key={_id}>
+                  <tr
+                    key={_id}
+                    className={`border-t ${
+                      theme === "myDark"
+                        ? "border-tableDarkBr"
+                        : "border-tableLightBr"
+                    } ${
+                      theme === "myDark"
+                        ? "hover:bg-tableDarkHover/50"
+                        : "hover:bg-tableLightHover/50"
+                    }`}
+                    onClick={(e) => handleRowClick(_id, e)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <th>{index + 1}</th>
                     <td>
                       <div className="flex flex-col">
@@ -114,8 +155,47 @@ const Collections = () => {
                         <span>{description}</span>
                       </div>
                     </td>
-                    <td>{customFields.length}</td>
                     <td>{topic}</td>
+                    <td>
+                      <Link
+                        to={`/collections/${_id}/fields`}
+                        className="hover:underline"
+                      >
+                        View Fields
+                      </Link>
+                    </td>
+                    <td>
+                      <div className="dropdown dropdown-top">
+                        <label tabIndex={0} className="btn m-1">
+                          <BsThreeDots />
+                        </label>
+                        <ul
+                          tabIndex={0}
+                          className="dropdown-content z-[1] menu p-2 shadow bg-secondary rounded-box w-32"
+                        >
+                          <li
+                            onClick={() =>
+                              editCollection({
+                                name,
+                                description,
+                                topic,
+                                collectionId: _id,
+                              })
+                            }
+                          >
+                            <span>
+                              <FaEdit className="text-primary" /> Edit
+                            </span>
+                          </li>
+                          <li>
+                            <span>
+                              <MdDelete className="text-primary text-lg" />
+                              Delete
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
                   </tr>
                 );
               })}

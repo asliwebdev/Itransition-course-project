@@ -20,11 +20,12 @@ import { loginUser } from "./features/userSlice";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { createCollection } from "./features/collectionSlice";
+import { toggleEditing } from "./features/collectionSlice";
 
 const App = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
+  const { isEditing, collectionId } = useSelector((store) => store.collection);
 
   const router = createBrowserRouter([
     {
@@ -42,7 +43,13 @@ const App = () => {
               <Collections />
             </ProtectedRoute>
           ),
-          action: collectionAction({ dispatch, createCollection, user }),
+          action: collectionAction({
+            dispatch,
+            user,
+            isEditing,
+            collectionId,
+            toggleEditing,
+          }),
         },
         {
           path: "search-results",
@@ -65,7 +72,7 @@ const App = () => {
           ),
         },
         {
-          path: "collection/:id",
+          path: "collections/:collectionId/:itemId",
           element: <Item />,
         },
         {

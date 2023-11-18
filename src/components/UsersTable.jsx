@@ -9,7 +9,9 @@ import {
 import { useEffect } from "react";
 
 const UsersTable = () => {
-  const { selectedUsers, users, user } = useSelector((store) => store.user);
+  const { selectedUsers, users, user, theme } = useSelector(
+    (store) => store.user
+  );
   const dispatch = useDispatch();
 
   const handleChange = (id) => {
@@ -24,7 +26,7 @@ const UsersTable = () => {
 
   return (
     <div className="mt-8 overflow-x-auto w-full">
-      <table className="table table-pin-rows table-pin-cols border">
+      <table className="table table-pin-rows table-pin-cols">
         <thead>
           <tr>
             <th>
@@ -70,7 +72,18 @@ const UsersTable = () => {
               role,
             } = user;
             return (
-              <tr key={_id} className="border-t border-gray-300">
+              <tr
+                key={_id}
+                className={`border-t ${
+                  theme === "myDark"
+                    ? "border-tableDarkBr"
+                    : "border-tableLightBr"
+                } ${
+                  theme === "myDark"
+                    ? "hover:bg-tableDarkHover/50"
+                    : "hover:bg-tableLightHover/50"
+                }`}
+              >
                 <th>
                   <label>
                     <input
