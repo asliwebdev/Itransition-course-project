@@ -20,11 +20,11 @@ const UsersTable = () => {
     if ((!users || users.length === 0) && user) {
       dispatch(getAllUsers());
     }
-  }, [dispatch, users, user]);
+  }, [dispatch, users]);
 
   return (
     <div className="mt-8 overflow-x-auto w-full">
-      <table className="table table-pin-rows table-pin-cols">
+      <table className="table table-pin-rows table-pin-cols border">
         <thead>
           <tr>
             <th>
@@ -70,7 +70,7 @@ const UsersTable = () => {
               role,
             } = user;
             return (
-              <tr key={_id}>
+              <tr key={_id} className="border-t border-gray-300">
                 <th>
                   <label>
                     <input

@@ -12,7 +12,6 @@ export const action =
       const response = await customFetch.post("/auth/login", data);
       dispatch(loginUser(response.data));
       toast.success(`Welcome back ${response.data.user.name || "user"}`);
-      console.log(redirect("/"));
       return redirect("/");
     } catch (error) {
       console.log(error);
