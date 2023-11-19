@@ -26,7 +26,7 @@ const CollectionCard = ({ isCollectionOpen }) => {
     >
       <Form
         method="POST"
-        className="relative z-50 bg-base-300 w-[90%] max-w-4xl h-[85%] p-14 flex flex-col gap-y-8 rounded-xl"
+        className="relative z-50 bg-base-300 w-[90%] max-w-4xl h-[75%] p-14 flex flex-col gap-y-8 rounded-xl sm:h-[68%]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -50,7 +50,7 @@ const CollectionCard = ({ isCollectionOpen }) => {
           defaultValue={isEditing && description}
           textarea
         />
-        <div className="flex justify-between items-end">
+        <div className="flex flex-col gap-y-8 justify-between sm:items-end sm:flex-row">
           <FormSelect
             labelText="Choose a Topic"
             name="topic"

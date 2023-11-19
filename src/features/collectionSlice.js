@@ -12,6 +12,7 @@ const initialState = {
   description: "",
   collectionId: "",
   isEditing: false,
+  isConfirmOpen: false,
 };
 
 export const getAllCollections = createAsyncThunk(
@@ -19,6 +20,18 @@ export const getAllCollections = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await customFetch.get("/collections");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const deleteCollection = createAsyncThunk(
+  "collection/deleteCollection",
+  async (collectionId, thunkAPI) => {
+    try {
+      const response = await customFetch.delete(`/collections/${collectionId}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -45,6 +58,14 @@ const collectionSlice = createSlice({
     toggleEditing: (state) => {
       state.isEditing = !state.isEditing;
     },
+    toggleConfirm: (state, { payload }) => {
+      if (payload) {
+        const { name, collectionId } = payload;
+        state.name = name;
+        state.collectionId = collectionId;
+      }
+      state.isConfirmOpen = !state.isConfirmOpen;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -57,12 +78,24 @@ const collectionSlice = createSlice({
       })
       .addCase(getAllCollections.rejected, (state, { payload }) => {
         state.isCollectionLoading = false;
-        toast.error(payload);
+        toast.error(payload.message);
+      })
+      .addCase(deleteCollection.fulfilled, (state, { payload }) => {
+        state.isConfirmOpen = false;
+        toast.success(payload.message);
+      })
+      .addCase(deleteCollection.rejected, (state, { payload }) => {
+        state.isConfirmOpen = false;
+        toast.error(payload.message);
       });
   },
 });
 
-export const { toggleCollection, setEditCollection, toggleEditing } =
-  collectionSlice.actions;
+export const {
+  toggleCollection,
+  setEditCollection,
+  toggleEditing,
+  toggleConfirm,
+} = collectionSlice.actions;
 
 export default collectionSlice.reducer;

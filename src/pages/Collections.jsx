@@ -4,6 +4,7 @@ import {
   getAllCollections,
   setEditCollection,
   toggleCollection,
+  toggleConfirm,
 } from "../features/collectionSlice";
 import { Empty, Loading, CollectionCard } from "../components";
 
@@ -13,6 +14,7 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import { MdAdd, MdDelete } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
+import ConfirmCard from "../components/ConfirmCard";
 
 export const action =
   ({ dispatch, user, isEditing, collectionId, toggleEditing }) =>
@@ -55,9 +57,8 @@ export const action =
   };
 
 const Collections = () => {
-  const { collections, isCollectionOpen, isCollectionLoading } = useSelector(
-    (store) => store.collection
-  );
+  const { collections, isCollectionOpen, isCollectionLoading, isConfirmOpen } =
+    useSelector((store) => store.collection);
   const { theme } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -75,9 +76,15 @@ const Collections = () => {
     dispatch(setEditCollection({ name, description, topic, collectionId }));
   };
 
+  const toggleDeletion = (id, name) => {
+    dispatch(toggleConfirm({ collectionId: id, name }));
+  };
+
   useEffect(() => {
-    dispatch(getAllCollections());
-  }, [isCollectionOpen]);
+    if (!isCollectionOpen && !isConfirmOpen) {
+      dispatch(getAllCollections());
+    }
+  }, [isCollectionOpen, isConfirmOpen]);
 
   if (isCollectionLoading) {
     return <Loading />;
@@ -171,7 +178,7 @@ const Collections = () => {
                         </label>
                         <ul
                           tabIndex={0}
-                          className="dropdown-content z-[1] menu p-2 shadow bg-secondary rounded-box w-32"
+                          className="dropdown-content z-[1] menu p-2 shadow bg-secondary rounded-box w-28"
                         >
                           <li
                             onClick={() =>
@@ -187,7 +194,7 @@ const Collections = () => {
                               <FaEdit className="text-primary" /> Edit
                             </span>
                           </li>
-                          <li>
+                          <li onClick={() => toggleDeletion(_id, name)}>
                             <span>
                               <MdDelete className="text-primary text-lg" />
                               Delete
@@ -204,6 +211,7 @@ const Collections = () => {
         </div>
       </div>
       <CollectionCard isCollectionOpen={isCollectionOpen} />
+      <ConfirmCard />
     </>
   );
 };
