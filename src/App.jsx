@@ -83,7 +83,7 @@ const App = () => {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: <Login shouldRedirect={shouldRedirect} />,
       action: loginAction({ dispatch, loginUser }),
     },
     {

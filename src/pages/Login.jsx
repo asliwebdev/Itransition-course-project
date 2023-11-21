@@ -2,7 +2,6 @@ import { Form, Link, Navigate } from "react-router-dom";
 import { FormInput, SubmitBtn } from "../components";
 import customFetch from "../utils/axios";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 
 export const action =
   ({ dispatch, loginUser }) =>
@@ -13,10 +12,6 @@ export const action =
       const response = await customFetch.post("/auth/login", data);
       dispatch(loginUser(response.data));
       toast.success(`Welcome back ${response.data.user.name || "user"}`);
-      // setTimeout(() => {
-      //   window.location.href = "/";
-      // }, 700);
-
       return null;
     } catch (error) {
       console.log(error);
@@ -29,10 +24,9 @@ export const action =
     }
   };
 
-const Login = () => {
-  const { shouldRedirect } = useSelector((store) => store.user);
+const Login = ({ shouldRedirect }) => {
   if (shouldRedirect) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace={true} />;
   }
 
   return (
