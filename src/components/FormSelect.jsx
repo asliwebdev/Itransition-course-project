@@ -6,14 +6,15 @@ const FormSelect = ({ list, labelText, name, defaultValue }) => {
           {labelText || "Topic"}
         </span>
       </label>
-      <select
-        className="select select-bordered bg-transparent"
-        name={name}
-        defaultValue={defaultValue || ""}
-      >
+      <select className="select select-bordered bg-transparent" name={name}>
         {list.map((item, index) => {
           return (
-            <option key={index} value={item} className="bg-base-300">
+            <option
+              key={index}
+              value={item}
+              className="bg-base-300"
+              selected={defaultValue === item}
+            >
               {item}
             </option>
           );

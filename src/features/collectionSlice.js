@@ -13,6 +13,8 @@ const initialState = {
   collectionId: "",
   isEditing: false,
   isConfirmOpen: false,
+  isAddFieldOpen: false,
+  isFieldSelected: false,
 };
 
 export const getAllCollections = createAsyncThunk(
@@ -48,7 +50,6 @@ const collectionSlice = createSlice({
     },
     setEditCollection: (state, { payload }) => {
       state.isEditing = true;
-      state.isCollectionOpen = true;
       const { name, description, topic, collectionId } = payload;
       state.name = name;
       state.description = description;
@@ -65,6 +66,12 @@ const collectionSlice = createSlice({
         state.collectionId = collectionId;
       }
       state.isConfirmOpen = !state.isConfirmOpen;
+    },
+    toggleAddField: (state) => {
+      state.isAddFieldOpen = !state.isAddFieldOpen;
+    },
+    toggleFieldSelected: (state) => {
+      state.isFieldSelected = !state.isFieldSelected;
     },
   },
   extraReducers: (builder) => {
@@ -96,6 +103,8 @@ export const {
   setEditCollection,
   toggleEditing,
   toggleConfirm,
+  toggleAddField,
+  toggleFieldSelected,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

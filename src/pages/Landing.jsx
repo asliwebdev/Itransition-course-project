@@ -1,7 +1,5 @@
 const Landing = () => {
-  return (
-    <section>Landing</section>
-  )
-}
+  return <section>Landing</section>;
+};
 
-export default Landing
+export default Landing;

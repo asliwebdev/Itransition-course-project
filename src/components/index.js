@@ -8,4 +8,6 @@ export { default as UsersTable } from "./UsersTable";
 export { default as RightSidebar } from "./RightSidebar";
 export { default as Empty } from "./Empty";
 export { default as CollectionCard } from "./CollectionCard";
+export { default as ConfirmCard } from "./ConfirmCard";
+export { default as AddFieldCard } from "./AddFieldCard";
 export { default as Loading } from "./Loading";

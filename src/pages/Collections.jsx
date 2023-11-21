@@ -6,7 +6,7 @@ import {
   toggleCollection,
   toggleConfirm,
 } from "../features/collectionSlice";
-import { Empty, Loading, CollectionCard } from "../components";
+import { Empty, Loading, CollectionCard, ConfirmCard } from "../components";
 
 import customFetch from "../utils/axios";
 import { toast } from "react-toastify";
@@ -14,7 +14,6 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import { MdAdd, MdDelete } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
-import ConfirmCard from "../components/ConfirmCard";
 
 export const action =
   ({ dispatch, user, isEditing, collectionId, toggleEditing }) =>
@@ -31,9 +30,10 @@ export const action =
           `${response?.data?.collection?.name} collection created successfully`
         );
         dispatch(toggleCollection());
-        return redirect(
-          `/collections/${response?.data?.collection?._id}/fields`
-        );
+        setTimeout(() => {
+          window.location.href = `/collections/${response?.data?.collection?._id}/fields`;
+        }, 1000);
+        return null;
       }
       const response = await customFetch.patch(`/collections/${collectionId}`, {
         user,
@@ -74,6 +74,7 @@ const Collections = () => {
 
   const editCollection = ({ name, description, topic, collectionId }) => {
     dispatch(setEditCollection({ name, description, topic, collectionId }));
+    dispatch(toggleCollection());
   };
 
   const toggleDeletion = (id, name) => {
@@ -96,6 +97,7 @@ const Collections = () => {
         <Empty
           text="There's no collections to show"
           btnText="create collection"
+          toggle={toggleCollection}
         />
         <CollectionCard isCollectionOpen={isCollectionOpen} />
       </>

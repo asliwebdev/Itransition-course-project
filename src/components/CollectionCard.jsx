@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { toggleCollection } from "../features/collectionSlice";
+import { toggleCollection, toggleEditing } from "../features/collectionSlice";
 import { LiaTimesSolid } from "react-icons/lia";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
@@ -12,6 +12,9 @@ const CollectionCard = ({ isCollectionOpen }) => {
   );
   const dispatch = useDispatch();
   const toggle = () => {
+    if (isEditing) {
+      dispatch(toggleEditing());
+    }
     dispatch(toggleCollection());
   };
 

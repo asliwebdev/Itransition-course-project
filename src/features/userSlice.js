@@ -23,6 +23,7 @@ const initialState = {
   users: [],
   selectedUsers: [],
   theme: getThemeFromLocalStorage(),
+  shouldRedirect: false,
 };
 
 export const getAllUsers = createAsyncThunk(
@@ -79,6 +80,7 @@ const userSlice = createSlice({
     },
     loginUser: (state, { payload }) => {
       state.user = payload.user;
+      state.shouldRedirect = true;
       addUserToLocalStorage(payload);
     },
     logoutUser: (state) => {
@@ -114,6 +116,9 @@ const userSlice = createSlice({
       const { myLight, myDark } = themes;
       const newTheme = state.theme === myLight ? myDark : myLight;
       state.theme = newTheme;
+    },
+    toggleShouldRedirect: (state) => {
+      state.shouldRedirect = !state.shouldRedirect;
     },
   },
   extraReducers: (builder) => {
@@ -156,6 +161,7 @@ export const {
   clearSelectedUsers,
   selectAllUsers,
   handleTheme,
+  toggleShouldRedirect,
 } = userSlice.actions;
 
 export default userSlice.reducer;
