@@ -18,17 +18,3 @@
     @apply lg:text-lg md:text-base sm:text-sm;
   }
 }
-
-@media screen and (min-width: 400px) {
-  .confirm {
-    width: 75%;
-    height: 75%;
-  }
-}
-
-@media screen and (min-width: 520px) {
-  .confirm {
-    width: 70%;
-    height: 68%;
-  }
-}

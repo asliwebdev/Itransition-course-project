@@ -73,6 +73,11 @@ const collectionSlice = createSlice({
     toggleFieldSelected: (state) => {
       state.isFieldSelected = !state.isFieldSelected;
     },
+    addField: (state, { payload }) => {
+      state.fields = [...state.fields, payload];
+      state.isAddFieldOpen = false;
+      state.isFieldSelected = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -105,6 +110,7 @@ export const {
   toggleConfirm,
   toggleAddField,
   toggleFieldSelected,
+  addField,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

@@ -21,8 +21,7 @@ const ConfirmCard = () => {
       onClick={toggle}
     >
       <div
-        className="relative z-50 bg-base-300 w-[90%] h-[77%] max-w-4xl p-6 flex flex-col gap-y-6 rounded-xl sm:w-[70%] sm:h-[64%] md:h-[56%]
-        lg:w-[51%] lg:h-[60%] xl:w-[48%] xl:h-[55%] 2xl:w-[45%] 2xl:h-[53%] confirm"
+        className="relative z-50 bg-base-300 w-[90%] h-[60%] max-w-2xl p-6 flex flex-col gap-y-6 rounded-xl max-sm:h-[75%]"
         onClick={(e) => e.stopPropagation()}
       >
         <h4 className="border-b pb-4 font-medium text-xl">Delete Collection</h4>

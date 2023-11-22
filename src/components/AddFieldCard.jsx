@@ -1,14 +1,39 @@
 import { useDispatch, useSelector } from "react-redux";
 import { LiaTimesSolid } from "react-icons/lia";
-import { toggleFieldSelected } from "../features/collectionSlice";
 import { customFields } from "../utils/constants";
+import { useState } from "react";
+import { addField } from "../features/collectionSlice";
 
-const AddFieldCard = ({ isAddFieldOpen, isFieldSelected, toggleAddField }) => {
+const AddFieldCard = ({
+  isAddFieldOpen,
+  isFieldSelected,
+  toggleAddField,
+  toggleFieldSelected,
+}) => {
   const { theme } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const [field, setField] = useState({
+    name: "",
+    type: "",
+  });
+
+  const handleChange = (e) => {
+    setField({ ...field, name: e.target.value });
+  };
+
+  const selectField = (type) => {
+    setField(type ? { ...field, type } : { name: "", type: "" });
+    dispatch(toggleFieldSelected());
+  };
 
   const toggle = () => {
+    setField({ name: "", type: "" });
     dispatch(toggleAddField());
+    setTimeout(() => {
+      if (isFieldSelected) {
+        dispatch(toggleFieldSelected());
+      }
+    }, 500);
   };
 
   if (isFieldSelected) {
@@ -29,7 +54,7 @@ const AddFieldCard = ({ isAddFieldOpen, isFieldSelected, toggleAddField }) => {
             <p className="font-medium">
               Add Field
               <span className="font-normal text-neutral-content ml-4">
-                Field Type
+                {field.type}
               </span>
             </p>
             <button type="button" onClick={toggle}>
@@ -44,6 +69,8 @@ const AddFieldCard = ({ isAddFieldOpen, isFieldSelected, toggleAddField }) => {
               type="text"
               placeholder="Type here"
               className="input input-bordered w-full bg-transparent"
+              value={field.name}
+              onChange={(e) => handleChange(e)}
             />
             <label className="label">
               <span className="label-text-alt text-neutral-content text-base">
@@ -56,11 +83,15 @@ const AddFieldCard = ({ isAddFieldOpen, isFieldSelected, toggleAddField }) => {
               <button
                 type="button"
                 className="btn btn-neutral text-base-content"
-                onClick={() => dispatch(toggleFieldSelected())}
+                onClick={() => selectField()}
               >
                 Change Field Type
               </button>
-              <button type="button" className="btn btn-primary text-white">
+              <button
+                type="button"
+                className="btn btn-primary text-white"
+                onClick={() => dispatch(addField(field))}
+              >
                 Add
               </button>
             </div>
@@ -80,11 +111,11 @@ const AddFieldCard = ({ isAddFieldOpen, isFieldSelected, toggleAddField }) => {
       onClick={toggle}
     >
       <div
-        className="relative z-50 bg-base-300 w-[90%] max-w-4xl h-[75%] flex flex-col gap-y-8 rounded-xl sm:w-[50%]"
+        className="relative z-50 bg-base-300 w-[90%] h-[80%] flex flex-col gap-y-8 rounded-xl max-w-3xl overflow-auto md:h-[75%]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b px-6 py-4">
-          <p className="font-medium">Add Field</p>
+          <p className="font-medium">Add new Field</p>
           <button type="button" onClick={toggle}>
             <LiaTimesSolid />
           </button>
@@ -95,11 +126,15 @@ const AddFieldCard = ({ isAddFieldOpen, isFieldSelected, toggleAddField }) => {
             return (
               <div
                 key={id}
-                className="border rounded-md hover:border-primary flex-1 p-4 cursor-pointer w-40 h-40"
+                className="border rounded-md hover:border-primary p-4 cursor-pointer flex flex-1 
+                flex-col gap-y-4 sm:min-w-[200px] sm:max-w-[250px]"
+                onClick={() => selectField(type)}
               >
-                <span>{icon}</span>
-                <span className="font-medium">{title}</span>
-                <p className="text-neutral-content">{text}</p>
+                {icon}
+                <div>
+                  <span className="font-medium">{title}</span>
+                  <p className="text-neutral-content">{text}</p>
+                </div>
               </div>
             );
           })}
