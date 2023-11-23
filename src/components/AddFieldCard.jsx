@@ -1,39 +1,51 @@
 import { useDispatch, useSelector } from "react-redux";
 import { LiaTimesSolid } from "react-icons/lia";
 import { customFields } from "../utils/constants";
-import { useState } from "react";
-import { addField } from "../features/collectionSlice";
+import { addField, editField } from "../features/collectionSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const AddFieldCard = ({
   isAddFieldOpen,
   isFieldSelected,
   toggleAddField,
   toggleFieldSelected,
+  field,
+  setField,
+  isFieldEditing,
+  setIsFieldEditing,
 }) => {
   const { theme } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [field, setField] = useState({
-    name: "",
-    type: "",
-  });
 
   const handleChange = (e) => {
     setField({ ...field, name: e.target.value });
   };
 
   const selectField = (type) => {
-    setField(type ? { ...field, type } : { name: "", type: "" });
+    setField(type ? { ...field, type } : { ...field, name: "", type: "" });
     dispatch(toggleFieldSelected());
   };
 
   const toggle = () => {
-    setField({ name: "", type: "" });
+    setField({ name: "", type: "", id: "" });
+    setIsFieldEditing(false);
     dispatch(toggleAddField());
     setTimeout(() => {
       if (isFieldSelected) {
         dispatch(toggleFieldSelected());
       }
-    }, 500);
+    }, 1000);
+  };
+
+  const add = (field) => {
+    dispatch(addField({ ...field, id: uuidv4() }));
+    setField({ name: "", type: "", id: "" });
+  };
+
+  const edit = (field) => {
+    dispatch(editField(field));
+    setField({ name: "", type: "", id: "" });
+    setIsFieldEditing(false);
   };
 
   if (isFieldSelected) {
@@ -87,13 +99,23 @@ const AddFieldCard = ({
               >
                 Change Field Type
               </button>
-              <button
-                type="button"
-                className="btn btn-primary text-white"
-                onClick={() => dispatch(addField(field))}
-              >
-                Add
-              </button>
+              {isFieldEditing ? (
+                <button
+                  type="button"
+                  className="btn btn-primary text-white"
+                  onClick={() => edit(field)}
+                >
+                  Edit
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-primary text-white"
+                  onClick={() => add(field)}
+                >
+                  Add
+                </button>
+              )}
             </div>
           </div>
         </div>

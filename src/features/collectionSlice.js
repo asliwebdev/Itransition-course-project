@@ -78,6 +78,12 @@ const collectionSlice = createSlice({
       state.isAddFieldOpen = false;
       state.isFieldSelected = false;
     },
+    editField: (state, { payload }) => {
+      let newFields = state.fields.filter((field) => field.id !== payload.id);
+      state.fields = [...newFields, payload];
+      state.isAddFieldOpen = false;
+      state.isFieldSelected = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -111,6 +117,7 @@ export const {
   toggleAddField,
   toggleFieldSelected,
   addField,
+  editField,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

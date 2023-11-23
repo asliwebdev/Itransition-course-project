@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AddFieldCard, Empty } from "../components";
 import {
@@ -16,6 +16,19 @@ const Fields = () => {
   );
   const { theme } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const [field, setField] = useState({
+    name: "",
+    type: "",
+    id: "",
+  });
+  const [isFieldEditing, setIsFieldEditing] = useState(false);
+
+  const edit = (field) => {
+    setIsFieldEditing(true);
+    setField(field);
+    dispatch(toggleFieldSelected());
+    dispatch(toggleAddField());
+  };
 
   if (fields.length === 0) {
     return (
@@ -31,11 +44,15 @@ const Fields = () => {
           isFieldSelected={isFieldSelected}
           toggleAddField={toggleAddField}
           toggleFieldSelected={toggleFieldSelected}
+          field={field}
+          setField={setField}
+          isFieldEditing={isFieldEditing}
+          setIsFieldEditing={setIsFieldEditing}
         />
       </>
     );
   }
-  console.log(fields);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center w-[90%]">
@@ -72,13 +89,13 @@ const Fields = () => {
             </thead>
             <tbody>
               {fields?.map((field) => {
-                const { name, type } = field;
+                const { name, type, id } = field;
                 const tempField = customFields.find(
                   (item) => item.type === type
                 );
                 return (
                   <tr
-                    key={name}
+                    key={id}
                     className={`border-t ${
                       theme === "myDark"
                         ? "border-tableDarkBr"
@@ -111,7 +128,7 @@ const Fields = () => {
                           tabIndex={0}
                           className="dropdown-content z-[1] menu p-2 shadow bg-secondary rounded-box w-28"
                         >
-                          <li>
+                          <li onClick={() => edit(field)}>
                             <span>
                               <FaEdit className="text-primary" /> Edit
                             </span>
@@ -157,6 +174,10 @@ const Fields = () => {
         isFieldSelected={isFieldSelected}
         toggleAddField={toggleAddField}
         toggleFieldSelected={toggleFieldSelected}
+        field={field}
+        setField={setField}
+        isFieldEditing={isFieldEditing}
+        setIsFieldEditing={setIsFieldEditing}
       />
     </>
   );
