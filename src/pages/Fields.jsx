@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AddFieldCard, Empty } from "../components";
+import { AddFieldCard, Empty, Loading } from "../components";
 import {
   toggleAddField,
   toggleFieldSelected,
+  deleteField,
+  getCollection,
+  updateCollection,
 } from "../features/collectionSlice";
 import { customFields } from "../utils/constants";
 import { BsThreeDots } from "react-icons/bs";
@@ -11,9 +14,13 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
 const Fields = () => {
-  const { fields, isAddFieldOpen, isFieldSelected } = useSelector(
-    (store) => store.collection
-  );
+  const {
+    fields,
+    isAddFieldOpen,
+    isFieldSelected,
+    isCollectionLoading,
+    isFieldsChanged,
+  } = useSelector((store) => store.collection);
   const { theme } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [field, setField] = useState({
@@ -23,12 +30,33 @@ const Fields = () => {
   });
   const [isFieldEditing, setIsFieldEditing] = useState(false);
 
+  useEffect(() => {
+    dispatch(getCollection());
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isFieldsChanged) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isFieldsChanged]);
+
   const edit = (field) => {
     setIsFieldEditing(true);
     setField(field);
     dispatch(toggleFieldSelected());
     dispatch(toggleAddField());
   };
+
+  if (isCollectionLoading) {
+    return <Loading />;
+  }
 
   if (fields.length === 0) {
     return (
@@ -58,7 +86,11 @@ const Fields = () => {
       <div className="flex flex-col justify-center items-center w-[90%]">
         <div className="flex justify-between items-center w-full">
           <h1 className="font-bold text-3xl leading-[42px]">Fields</h1>
-          <button type="button" className="btn btn-primary text-white">
+          <button
+            type="button"
+            className="btn btn-primary text-white"
+            onClick={() => dispatch(updateCollection())}
+          >
             save
           </button>
         </div>
@@ -133,7 +165,7 @@ const Fields = () => {
                               <FaEdit className="text-primary" /> Edit
                             </span>
                           </li>
-                          <li>
+                          <li onClick={() => dispatch(deleteField({ id }))}>
                             <span>
                               <MdDelete className="text-primary text-lg" />
                               Delete

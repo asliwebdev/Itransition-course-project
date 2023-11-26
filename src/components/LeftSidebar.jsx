@@ -6,15 +6,36 @@ import { BiLogOut } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { logoutUser } from "../features/userSlice";
+import { toggleFieldsChanged } from "../features/collectionSlice";
+
+const handleLinkClick = (event, dispatch, isFieldsChanged) => {
+  const confirmationMessage =
+    "Are you sure you want to leave? Your changes may not be saved.";
+
+  if (isFieldsChanged) {
+    const userConfirmation = window.confirm(confirmationMessage);
+
+    if (!userConfirmation) {
+      event.preventDefault();
+      return;
+    }
+    dispatch(toggleFieldsChanged());
+  }
+};
 
 const LeftSidebar = () => {
   const { user, theme } = useSelector((store) => store.user);
+  const { isFieldsChanged } = useSelector((store) => store.collection);
   const dispatch = useDispatch();
 
   const logout = () => {
     toast.success("Logging out...");
     dispatch(logoutUser());
     redirect("/");
+  };
+
+  const handleClick = (event) => {
+    handleLinkClick(event, dispatch, isFieldsChanged);
   };
 
   return (
@@ -36,6 +57,7 @@ const LeftSidebar = () => {
                   ? "nav-link bg-primary text-white rounded-lg"
                   : "nav-link"
               }
+              onClick={handleClick}
             >
               {icon}
               <p className="capitalize max-lg:hidden">{text}</p>
@@ -50,6 +72,7 @@ const LeftSidebar = () => {
                 ? "nav-link bg-primary text-white rounded-lg"
                 : "nav-link"
             }
+            onClick={handleClick}
           >
             <RiAdminLine />
             <p className="capitalize max-lg:hidden">Admin</p>
@@ -79,5 +102,7 @@ const LeftSidebar = () => {
     </aside>
   );
 };
+
+export { handleLinkClick };
 
 export default LeftSidebar;

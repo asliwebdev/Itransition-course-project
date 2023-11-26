@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAllCollections,
+  setCollectionId,
   setEditCollection,
   toggleCollection,
   toggleConfirm,
@@ -169,6 +170,7 @@ const Collections = () => {
                       <Link
                         to={`/collections/${_id}/fields`}
                         className="hover:underline"
+                        onClick={() => dispatch(setCollectionId({ id: _id }))}
                       >
                         View Fields
                       </Link>

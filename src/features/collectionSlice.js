@@ -15,6 +15,7 @@ const initialState = {
   isConfirmOpen: false,
   isAddFieldOpen: false,
   isFieldSelected: false,
+  isFieldsChanged: false,
 };
 
 export const getAllCollections = createAsyncThunk(
@@ -34,6 +35,49 @@ export const deleteCollection = createAsyncThunk(
   async (collectionId, thunkAPI) => {
     try {
       const response = await customFetch.delete(`/collections/${collectionId}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const getCollection = createAsyncThunk(
+  "collection/getCollection",
+  async (_, thunkAPI) => {
+    const { collectionId } = thunkAPI.getState().collection;
+    try {
+      const currentUrl = window.location.href;
+
+      const urlParts = currentUrl.split("/");
+      const id = urlParts[urlParts.length - 2];
+
+      const response = await customFetch.get(
+        `/collections/${collectionId || id}/fields`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updateCollection = createAsyncThunk(
+  "collection, updateCollection",
+  async (_, thunkAPI) => {
+    try {
+      const { fields, collectionId } = thunkAPI.getState().collection;
+      const currentUrl = window.location.href;
+
+      const urlParts = currentUrl.split("/");
+      const id = urlParts[urlParts.length - 2];
+
+      const response = await customFetch.patch(
+        `/collections/${collectionId || id}`,
+        {
+          updatedFields: { customFields: fields },
+        }
+      );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -77,12 +121,25 @@ const collectionSlice = createSlice({
       state.fields = [...state.fields, payload];
       state.isAddFieldOpen = false;
       state.isFieldSelected = false;
+      state.isFieldsChanged = true;
     },
     editField: (state, { payload }) => {
       let newFields = state.fields.filter((field) => field.id !== payload.id);
       state.fields = [...newFields, payload];
       state.isAddFieldOpen = false;
       state.isFieldSelected = false;
+      state.isFieldsChanged = true;
+    },
+    deleteField: (state, { payload }) => {
+      let newFields = state.fields.filter((field) => field.id !== payload.id);
+      state.fields = newFields;
+      state.isFieldsChanged = true;
+    },
+    setCollectionId: (state, { payload }) => {
+      state.collectionId = payload.id;
+    },
+    toggleFieldsChanged: (state) => {
+      state.isFieldsChanged = !state.isFieldsChanged;
     },
   },
   extraReducers: (builder) => {
@@ -105,6 +162,30 @@ const collectionSlice = createSlice({
       .addCase(deleteCollection.rejected, (state, { payload }) => {
         state.isConfirmOpen = false;
         toast.error(payload.message);
+      })
+      .addCase(getCollection.pending, (state) => {
+        state.isCollectionLoading = true;
+      })
+      .addCase(getCollection.fulfilled, (state, { payload }) => {
+        state.isCollectionLoading = false;
+        state.fields = payload.collection.customFields;
+      })
+      .addCase(getCollection.rejected, (state, { payload }) => {
+        state.isCollectionLoading = false;
+        toast.error(payload.message);
+      })
+      .addCase(updateCollection.pending, (state) => {
+        state.isCollectionLoading = true;
+      })
+      .addCase(updateCollection.fulfilled, (state, { payload }) => {
+        state.isCollectionLoading = false;
+        state.isFieldsChanged = false;
+        state.fields = payload.collection.customFields;
+        toast.success("Field changes saved successfully");
+      })
+      .addCase(updateCollection.rejected, (state, { payload }) => {
+        state.isCollectionLoading = false;
+        toast.error(payload.message);
       });
   },
 });
@@ -118,6 +199,9 @@ export const {
   toggleFieldSelected,
   addField,
   editField,
+  deleteField,
+  setCollectionId,
+  toggleFieldsChanged,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;
