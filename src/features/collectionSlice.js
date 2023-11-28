@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customFetch from "../utils/axios";
 import { toast } from "react-toastify";
+import {
+  addCollectionIdToLocalStorage,
+  getCollectionIdFromLocalStorage,
+} from "../utils/localStorage";
 
 const initialState = {
   isCollectionLoading: true,
@@ -10,7 +14,7 @@ const initialState = {
   name: "",
   topic: "",
   description: "",
-  collectionId: "",
+  collectionId: getCollectionIdFromLocalStorage() || "",
   isEditing: false,
   isConfirmOpen: false,
   isAddFieldOpen: false,
@@ -137,6 +141,7 @@ const collectionSlice = createSlice({
     },
     setCollectionId: (state, { payload }) => {
       state.collectionId = payload.id;
+      addCollectionIdToLocalStorage(payload.id);
     },
     toggleFieldsChanged: (state) => {
       state.isFieldsChanged = !state.isFieldsChanged;

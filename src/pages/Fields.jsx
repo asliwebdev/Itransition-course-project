@@ -12,6 +12,7 @@ import { customFields } from "../utils/constants";
 import { BsThreeDots } from "react-icons/bs";
 import { MdAdd, MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Fields = () => {
   const {
@@ -20,6 +21,7 @@ const Fields = () => {
     isFieldSelected,
     isCollectionLoading,
     isFieldsChanged,
+    collectionId,
   } = useSelector((store) => store.collection);
   const { theme } = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -85,6 +87,13 @@ const Fields = () => {
     <>
       <div className="flex flex-col justify-center items-center w-[90%]">
         <div className="flex justify-between items-center w-full">
+          <div className="text-sm breadcrumbs">
+            <ul>
+              <li>
+                <Link to={`/collections/${collectionId}`}>Items</Link>
+              </li>
+            </ul>
+          </div>
           <h1 className="font-bold text-3xl leading-[42px]">Fields</h1>
           <button
             type="button"

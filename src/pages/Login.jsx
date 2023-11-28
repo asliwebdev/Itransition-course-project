@@ -1,4 +1,4 @@
-import { Form, Link, Navigate } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import { FormInput, SubmitBtn } from "../components";
 import customFetch from "../utils/axios";
 import { toast } from "react-toastify";
@@ -11,6 +11,9 @@ export const action =
     try {
       const response = await customFetch.post("/auth/login", data);
       dispatch(loginUser(response.data));
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
       toast.success(`Welcome back ${response.data.user.name || "user"}`);
       return null;
     } catch (error) {
@@ -24,11 +27,7 @@ export const action =
     }
   };
 
-const Login = ({ shouldRedirect }) => {
-  if (shouldRedirect) {
-    return <Navigate to="/" replace={true} />;
-  }
-
+const Login = () => {
   return (
     <section className="h-screen grid place-items-center">
       <Form

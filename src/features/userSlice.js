@@ -23,7 +23,6 @@ const initialState = {
   users: [],
   selectedUsers: [],
   theme: getThemeFromLocalStorage(),
-  shouldRedirect: false,
 };
 
 export const getAllUsers = createAsyncThunk(
@@ -80,7 +79,6 @@ const userSlice = createSlice({
     },
     loginUser: (state, { payload }) => {
       state.user = payload.user;
-      state.shouldRedirect = true;
       addUserToLocalStorage(payload);
     },
     logoutUser: (state) => {

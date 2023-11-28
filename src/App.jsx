@@ -24,13 +24,13 @@ import { toggleEditing } from "./features/collectionSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { user, shouldRedirect } = useSelector((store) => store.user);
+  const { user } = useSelector((store) => store.user);
   const { isEditing, collectionId } = useSelector((store) => store.collection);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <HomeLayout shouldRedirect={shouldRedirect} />,
+      element: <HomeLayout />,
       children: [
         {
           index: true,
@@ -72,7 +72,7 @@ const App = () => {
           ),
         },
         {
-          path: "collections/:collectionId/:itemId",
+          path: "collections/:collectionId/items/:itemId",
           element: <Item />,
         },
         {
@@ -83,7 +83,7 @@ const App = () => {
     },
     {
       path: "/login",
-      element: <Login shouldRedirect={shouldRedirect} />,
+      element: <Login />,
       action: loginAction({ dispatch, loginUser }),
     },
     {

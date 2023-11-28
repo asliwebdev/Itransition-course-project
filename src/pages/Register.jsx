@@ -11,8 +11,11 @@ export const action =
     try {
       const response = await customFetch.post("/auth/register", data);
       dispatch(loginUser(response.data));
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
       toast.success("registered successfully");
-      return redirect("/");
+      return null;
     } catch (error) {
       console.log(error);
       const errorMessage =

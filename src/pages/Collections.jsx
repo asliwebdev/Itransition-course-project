@@ -11,7 +11,7 @@ import { Empty, Loading, CollectionCard, ConfirmCard } from "../components";
 
 import customFetch from "../utils/axios";
 import { toast } from "react-toastify";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdAdd, MdDelete } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
@@ -69,6 +69,7 @@ const Collections = () => {
     const isActionButtonClicked = event.target.closest(".dropdown") !== null;
 
     if (!isLinkClicked && !isActionButtonClicked) {
+      dispatch(setCollectionId({ id }));
       navigate(`/collections/${id}`);
     }
   };

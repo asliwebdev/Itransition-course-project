@@ -11,3 +11,4 @@ export { default as CollectionCard } from "./CollectionCard";
 export { default as ConfirmCard } from "./ConfirmCard";
 export { default as AddFieldCard } from "./AddFieldCard";
 export { default as Loading } from "./Loading";
+export { default as SecondInput } from "./SecondInput";

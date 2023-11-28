@@ -40,7 +40,7 @@ export const customFields = [
     icon: <TiDocumentText className="text-3xl" />,
     title: "Multiline Text",
     text: "Longer text like description",
-    type: "string",
+    type: "multiline",
   },
   {
     id: 3,

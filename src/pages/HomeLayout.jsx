@@ -1,13 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { LeftSidebar, Navbar, RightSidebar, SmallSidebar } from "../components";
-import { useDispatch } from "react-redux";
-import { toggleShouldRedirect } from "../features/userSlice";
 
-const HomeLayout = ({ shouldRedirect }) => {
-  const dispatch = useDispatch();
-  if (shouldRedirect) {
-    dispatch(toggleShouldRedirect());
-  }
+const HomeLayout = () => {
   return (
     <>
       <Navbar />
