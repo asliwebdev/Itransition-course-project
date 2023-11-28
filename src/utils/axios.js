@@ -2,7 +2,7 @@ import axios from "axios";
 import { getUserFromLocalStorage } from "./localStorage";
 
 const customFetch = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://coll-app-server.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
